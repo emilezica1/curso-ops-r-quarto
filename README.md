@@ -8,3 +8,5 @@ Cada una edita su propio archivo:
 - Emiliano_mi_script.R
 
 Clic en tu archivo → lápiz ✏️ → pegás tu código → Commit changes
+
+Y en el script_FINAL iria la parte de cada integrante, una abajo de la otra
