@@ -1,1 +1,159 @@
+#Instalar paquetes
+install.packages("tidyverse")
+install.packages("lubridate")
+install.packages("writexl")
+install.packages("googledrive")
+
+
+#Activar los paquetes
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(writexl)
+library(googledrive)
+library(dplyr)
+
+##### BASE AG_UC_IRAG_2026_04_16
+
+# Descargar la base desde google drive
+#Overwrite: reemplazo el archivo viejo por el nuevo
+drive_download(
+  as_id("1UtZYSTEBYos-cOF6UM2BPT6hVIasOWua"),
+  path = "AG_UC_IRAG_2026_04_16.xlsx",
+  overwrite = TRUE)
+
+#lectura de la base
+AG_UC_IRAG_2026_04_16 <- read_xlsx("AG_UC_IRAG_2026_04_16.xlsx") 
+
+#Queremos conocer las columnas
+colnames(AG_UC_IRAG_2026_04_16)
+
+#Filtrado
+# Convertimos ANIO y SEMANA a numero entero 
+AG_UC_IRAG_2026_04_16 <- AG_UC_IRAG_2026_04_16 |>
+  filter((ANIO == 2024 & SEMANA >= 20) |
+           (ANIO == 2025) |
+           (ANIO == 2026 & SEMANA <= 5)) |>
+  mutate(ANIO = as.integer(ANIO),
+         SEMANA = as.integer(SEMANA))
+
+#Vimos si se modificó correctamente el tipo de variable
+class(AG_UC_IRAG_2026_04_16$SEMANA)
+
+#chequeo que se haya filtrado bien
+TABLA_1 <- AG_UC_IRAG_2026_04_16 |> count(ANIO, SEMANA)
+#eliminamos objeto
+rm(TABLA_1)
+
+
+
+##### BASE UC IRAG-carga agrupada- CABA - Gutierrez
+
+# Descargar la base desde google drive
+#Overwrite: reemplazo el archivo viejo por el nuevo
+drive_download(
+  as_id("1ZBoczvWDNh0El4bjzL2JdemGLHmSzgBX"),
+  path = "UC IRAG - Carga Agrupada - CABA - Gutierrez.xlsx",
+  overwrite = TRUE)
+
+#lectura de la base
+UC_IRAG_Carga_Agrupada_CABA_Gutierrez <- read_xlsx("UC IRAG - Carga Agrupada - CABA - Gutierrez.xlsx") 
+
+#Queremos conocer las columnas
+colnames(UC_IRAG_Carga_Agrupada_CABA_Gutierrez)
+
+#Filtrado
+# Convertimos ANIO y SEMANA a numero entero 
+UC_IRAG_Carga_Agrupada_CABA_Gutierrez <- UC_IRAG_Carga_Agrupada_CABA_Gutierrez |>
+  filter((ANIO == 2024 & SEMANA >= 20) |
+           (ANIO == 2025) |
+           (ANIO == 2026 & SEMANA <= 5)) |>
+  mutate(ANIO = as.integer(ANIO),
+         SEMANA = as.integer(SEMANA))
+
+#Vimos si se modificó correctamente el tipo de variable
+class(UC_IRAG_Carga_Agrupada_CABA_Gutierrez$SEMANA)
+
+#chequeo que se haya filtrado bien
+TABLA_1 <- UC_IRAG_Carga_Agrupada_CABA_Gutierrez |> count(ANIO, SEMANA)
+#eliminamos objeto
+rm(TABLA_1)
+
+##### BASE UC_IRAG_EST10194
+
+# Descargar la base desde google drive
+#Overwrite: reemplazo el archivo viejo por el nuevo
+drive_download(
+  as_id("1L-CY162CokkC9G9u7tMu1EkZAgK3t3gY"),
+  path = "UC_IRAG_EST10194.xlsx",
+  overwrite = TRUE)
+
+#lectura de la base
+UC_IRAG_EST10194 <- read_xlsx("UC_IRAG_EST10194.xlsx") 
+
+#Queremos conocer las columnas
+colnames(UC_IRAG_EST10194)
+
+#Filtrado
+# Convertimos ANIO_APERTURA y SEPI_APERTURA a numero entero 
+UC_IRAG_EST10194 <- UC_IRAG_EST10194 |>
+  filter((ANIO_APERTURA == 2024 & SEPI_APERTURA >= 20) |
+           (ANIO_APERTURA == 2025) |
+           (ANIO_APERTURA == 2026 & SEPI_APERTURA <= 5)) |>
+  mutate(ANIO_APERTURA = as.integer(ANIO_APERTURA),
+         SEPI_APERTURA = as.integer(SEPI_APERTURA))
+
+#Vimos si se modificó correctamente el tipo de variable
+class(UC_IRAG_EST10194$SEPI_APERTURA)
+
+#chequeo que se haya filtrado bien
+TABLA_1 <- UC_IRAG_EST10194 |> count(ANIO_APERTURA, SEPI_APERTURA)
+#eliminamos objeto
+rm(TABLA_1)
+
+
+# Inclusión/Exclusión
+aplicar_criterios <- function(df){
+  df %>%
+    filter(!is.na(FECHA_INTERNACION),
+           !is.na(CONDICION_EGRESO),
+           !is.na(MUESTRA_LABORATORIO),
+           CLASIFICACION_MANUAL != "Casos invalidados por epidemiología")
+}
+
+# Duplicados por ID + IDEVENTOCASO
+depurar_duplicados <- function(df){
+  df %>%
+    group_by(ID, IDEVENTOCASO) %>%
+    mutate(n_na = rowSums(is.na(.))) %>%
+    arrange(n_na) %>%
+    slice(1) %>%
+    ungroup() %>%
+    select(-n_na)
+}
+
+# Análisis de faltantes (NA vs código 9)
+analizar_faltantes <- function(df, nombre_base){
+  cat("\n--- Análisis de faltantes en", nombre_base, "---\n")
+  resultados <- data.frame(variable=character(), prop_total_faltante=numeric())
+  for(v in colnames(df)){
+    total <- nrow(df)
+    n_na <- sum(is.na(df[[v]]))
+    n_cod9 <- sum(df[[v]] == 9, na.rm = TRUE)
+    prop_total <- round(100 * (n_na + n_cod9) / total, 1)
+    resultados <- rbind(resultados, data.frame(variable=v, prop_total_faltante=prop_total))
+  }
+  print(resultados)
+  criticas <- resultados %>% filter(prop_total_faltante > 30)
+  if(nrow(criticas) > 0){
+    cat("\nVariables con más del 30% de faltantes:\n")
+    print(criticas)
+  }
+}
+
+
+  
+
+
+
 
