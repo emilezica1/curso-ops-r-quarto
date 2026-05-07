@@ -1,3 +1,4 @@
+##### Acá va el script final con la parte de cada integrante, una abajo de la otra #####
 #Instalar paquetes
 install.packages("tidyverse")
 install.packages("lubridate")
