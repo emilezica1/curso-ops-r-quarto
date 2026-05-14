@@ -96,22 +96,68 @@ grafico_sexo <- casos_por_sexo |>
   theme_minimal()
 
 # Gráfico 3. Curva epidémica IRAG / IRAG extendida
+# Crear etiquetas de semanas
+etiquetas_x <- casos_irag_irage_por_semana |>
+  arrange(anio, semana) |>
+  distinct(anio, semana) |>
+  mutate(se_anio = paste0("SE ", semana, "-", anio))
+
+# Gráfico curva epidémica
+etiquetas_x <- casos_irag_irage_por_semana |>
+  arrange(anio, semana) |>
+  distinct(anio, semana) |>
+  mutate(se_anio = paste0("SE ", semana, "-", anio))
+
 grafico_curva_epidemica <- casos_irag_irage_por_semana |>
-  mutate(se_anio = paste0("SE ", semana, "-", anio)) |>
-  ggplot(aes(x = reorder(se_anio, semana), y = total_casos, color = evento, group = evento)) +
+  arrange(anio, semana) |>
+  mutate(
+    semana_orden = dense_rank(paste(anio, semana)),
+    evento = recode(
+      evento,
+      "Casos de IRAG entre los internados" = "IRAG",
+      "Casos de IRAG extendida entre los internados" = "IRAG extendida"
+    )
+  ) |>
+  ggplot(aes(x = semana_orden,
+             y = total_casos,
+             color = evento,
+             group = evento)) +
   geom_line(linewidth = 1) +
-  geom_point(size = 1.8) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(
+    breaks = seq(1, nrow(etiquetas_x), by = 8),
+    labels = etiquetas_x$se_anio[seq(1, nrow(etiquetas_x), by = 8)]
+  ) +
   labs(
     title = "Casos de IRAG e IRAG extendida por semana epidemiológica",
     x = "Semana epidemiológica",
     y = "Número de casos",
-    color = "Evento"
+    color = NULL
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 7))
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45,
+                               hjust = 1,
+                               size = 8)
+  )
+
+# Gráfico 4. Positividad viral semanal
+# Etiquetas para eje X
+etiquetas_pos <- positividad_viral_por_semana |>
+  arrange(ANIO_FECHA_INTER, SEPI_FECHA_INTER) |>
+  distinct(ANIO_FECHA_INTER, SEPI_FECHA_INTER) |>
+  mutate(
+    semana_orden = row_number(),
+    se_anio = paste0("SE ", SEPI_FECHA_INTER, "-", ANIO_FECHA_INTER)
+  )
 
 # Gráfico 4. Positividad viral semanal
 grafico_positividad_viral <- positividad_viral_por_semana |>
+  arrange(ANIO_FECHA_INTER, SEPI_FECHA_INTER) |>
+  mutate(
+    semana_orden = dense_rank(paste(ANIO_FECHA_INTER, SEPI_FECHA_INTER))
+  ) |>
   pivot_longer(
     cols = c(porcentaje_vsr, porcentaje_influenza, porcentaje_covid),
     names_to = "virus",
@@ -123,12 +169,20 @@ grafico_positividad_viral <- positividad_viral_por_semana |>
       porcentaje_vsr = "VSR",
       porcentaje_influenza = "Influenza",
       porcentaje_covid = "SARS-CoV-2"
-    ),
-    se_anio = paste0("SE ", SEPI_FECHA_INTER, "-", ANIO_FECHA_INTER)
+    )
   ) |>
-  ggplot(aes(x = reorder(se_anio, SEPI_FECHA_INTER), y = porcentaje, color = virus, group = virus)) +
+  ggplot(aes(
+    x = semana_orden,
+    y = porcentaje,
+    color = virus,
+    group = virus
+  )) +
   geom_line(linewidth = 1) +
   geom_point(size = 1.5) +
+  scale_x_continuous(
+    breaks = etiquetas_pos$semana_orden[seq(1, nrow(etiquetas_pos), by = 8)],
+    labels = etiquetas_pos$se_anio[seq(1, nrow(etiquetas_pos), by = 8)]
+  ) +
   labs(
     title = "Porcentaje de positividad viral por semana epidemiológica",
     x = "Semana epidemiológica",
@@ -136,27 +190,110 @@ grafico_positividad_viral <- positividad_viral_por_semana |>
     color = "Virus"
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 7))
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 8)
+  )
 
 # Gráfico 5. Comorbilidades
 grafico_comorbilidades <- frecuencia_comorbilidades |>
-  ggplot(aes(x = reorder(comorbilidad, cantidad), y = cantidad)) +
-  geom_col() +
+  mutate(
+    comorbilidad = recode(
+      comorbilidad,
+      "PREMATURIDAD" = "Prematuridad",
+      "ASMA" = "Asma",
+      "CARDIOPATIA_CONGENITA" = "Cardiopatía congénita",
+      "ENF_NEUROLOGICA_CRONICA" = "Enfermedad neurológica crónica",
+      "OTRAS_COMORBILIDADES" = "Otras comorbilidades",
+      "S_DOWN" = "Síndrome de Down",
+      "INMUNOCOMPROMETIDO_OTRAS_CAUSAS" = "Inmunocompromiso",
+      "DESNUTRICION" = "Desnutrición",
+      "DBP" = "DBP",
+      "VIH" = "VIH",
+      "SIN_COMORBILIDADES" = "Sin comorbilidades",
+      "OBESIDAD" = "Obesidad"
+    )
+  ) |>
+  ggplot(aes(
+    x = reorder(comorbilidad, cantidad),
+    y = cantidad
+  )) +
+  geom_col(fill = "#4E79A7") +
+  geom_text(
+    aes(label = cantidad),
+    hjust = -0.2,
+    size = 3.5
+  ) +
   coord_flip() +
   labs(
-    title = "Comorbilidades registradas en pacientes con IRAG/IRAG extendida",
-    x = "Comorbilidad",
+    title = "Comorbilidades registradas",
+    x = NULL,
     y = "Número de casos"
   ) +
-  theme_minimal()
+  expand_limits(y = max(frecuencia_comorbilidades$cantidad) * 1.1) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(
+      face = "bold",
+      size = 14,
+      hjust = -2
+    ),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 11)
+  )
 
 # Gráfico 6. Soporte respiratorio
 grafico_soporte <- distribucion_soporte |>
-  ggplot(aes(x = soporte, y = cantidad)) +
-  geom_col() +
+  mutate(
+    porcentaje = round(porcentaje, 1),
+    etiqueta = paste0(
+      porcentaje, "%\n(",
+      cantidad, " casos)"
+    )
+  ) |>
+  ggplot(aes(
+    x = "",
+    y = cantidad,
+    fill = soporte
+  )) +
+  geom_col(
+    width = 1,
+    color = "white",
+    linewidth = 1
+  ) +
+  coord_polar(theta = "y") +
+  geom_text(
+    aes(label = etiqueta),
+    position = position_stack(vjust = 0.5),
+    size = 3,
+    fontface = "bold",
+    color = "white"
+  ) +
   labs(
     title = "Distribución del soporte respiratorio",
-    x = "Tipo de soporte",
-    y = "Número de casos"
+    subtitle = "Pacientes hospitalizados con IRAG/IRAG extendida",
+    fill = NULL
   ) +
-  theme_minimal()
+  scale_fill_manual(
+    values = c(
+      "Bajo flujo" = "#0072B2",
+      "Alto flujo" = "#009E73",
+      "Ventilación mecánica" = "#7B3294",
+      "Sin soporte registrado" = "#F0C808"
+    )
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(
+      face = "bold",
+      size = 12,
+      hjust = 1
+    ),
+    plot.subtitle = element_text(
+      size = 12,
+      hjust = 1
+    ),
+    legend.position = "right",
+    legend.text = element_text(size = 8),
+    legend.title = element_blank()
+  )
