@@ -1,1 +1,299 @@
+---
+title: "Reporte automatizado de vigilancia epidemiológica"
+subtitle: "Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG)"
+author: "Hospital de Niños Ricardo Gutiérrez"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+execute:
+  echo: false
+  warning: false
+  message: false
+---
 
+# Introducción
+
+Las infecciones respiratorias agudas (IRA) continúan representando una de las principales causas de morbimortalidad y utilización de servicios de salud en población pediátrica. La vigilancia epidemiológica integrada de estas infecciones, mediante la articulación de los componentes clínico, epidemiológico y laboratorial, constituye una herramienta fundamental para caracterizar la situación epidemiológica, detectar cambios en los patrones de circulación viral y orientar oportunamente las estrategias de prevención y control.
+
+En Argentina, la vigilancia de las infecciones respiratorias agudas se desarrolla a través de múltiples estrategias complementarias, incluyendo la vigilancia universal, las redes laboratoriales y genómicas, y la vigilancia centinela de enfermedad respiratoria aguda grave (IRAG). En este marco, las Unidades Centinela de IRAG (UC-IRAG) permiten realizar una vigilancia activa y sistemática de pacientes hospitalizados con infecciones respiratorias graves, aportando información detallada sobre características demográficas, clínicas, evolución, utilización de servicios de salud y etiología viral.
+
+La Unidad Centinela de IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez” inició sus actividades en el año 2024 como parte de la Red Argentina de Vigilancia Centinela de IRAG. El hospital constituye un centro pediátrico de referencia de tercer nivel para la Ciudad Autónoma de Buenos Aires y otras jurisdicciones del país, con capacidad de atención de pacientes complejos y soporte intensivo pediátrico y neonatal.
+
+La vigilancia desarrollada en esta unidad se basa en la identificación activa y sistemática de casos hospitalizados que cumplen criterios de IRAG e IRAG extendida, el seguimiento clínico durante la internación y la integración de la información clínica, epidemiológica y laboratorial en el Sistema Nacional de Vigilancia de la Salud (SNVS 2.0).
+
+El presente reporte automatizado tiene como finalidad sistematizar el análisis periódico de la información generada por la UC-IRAG del Hospital de Niños Ricardo Gutiérrez, promoviendo la disponibilidad de datos oportunos, reproducibles y de calidad para fortalecer la vigilancia epidemiológica, el monitoreo de tendencias y la toma de decisiones en salud pública.
+
+# Objetivos
+Objetivo general
+
+Desarrollar un reporte automatizado, reproducible y actualizado de vigilancia epidemiológica de la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) del Hospital General de Niños “Dr. Ricardo Gutiérrez”, que permita transformar la información recolectada en evidencia útil para el monitoreo de tendencias, la caracterización clínica y epidemiológica de los casos y la toma de decisiones en salud pública.
+
+Objetivos específicos
+Describir las características demográficas y clínicas de los pacientes hospitalizados con IRAG e IRAG extendida incluidos en la vigilancia centinela.
+Analizar la evolución temporal de los casos según semana epidemiológica para identificar patrones de circulación y variaciones estacionales.
+Caracterizar la etiología viral de los casos incluidos mediante el análisis de los resultados de laboratorio para virus respiratorios.
+Estimar indicadores vinculados a gravedad y utilización de servicios de salud, incluyendo ingreso a cuidados intensivos, requerimiento de soporte respiratorio y letalidad.
+Describir la frecuencia y distribución de comorbilidades y factores de riesgo asociados a los casos hospitalizados.
+Analizar variables vinculadas a estrategias de prevención e inmunización, incluyendo vacunación antigripal, vacunación materna contra VSR y uso de anticuerpos monoclonales.
+Evaluar la calidad, consistencia y completitud de los datos registrados en la vigilancia centinela.
+Generar productos automatizados de visualización y análisis que faciliten la difusión periódica de la información epidemiológica para equipos de salud y autoridades sanitarias.
+
+# Metodología
+##Diseño y fuente de datos
+
+Se realizó un estudio observacional descriptivo basado en los registros de vigilancia epidemiológica de la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) del Hospital General de Niños “Dr. Ricardo Gutiérrez”.
+
+Las fuentes de información utilizadas fueron:
+
+La base de datos nominal anonimizada proveniente del Sistema Nacional de Vigilancia de la Salud (SNVS 2.0), correspondiente al evento “Unidad Centinela de IRAG”, procesada y distribuida semanalmente por el Ministerio de Salud de la Nación.
+La base de datos agrupada de la UC-IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez”, utilizada para el cálculo de indicadores agregados de hospitalización, utilización de unidades de cuidados intensivos y mortalidad.
+
+La vigilancia epidemiológica se desarrolló mediante una estrategia activa y sistemática de identificación de casos hospitalizados en salas de internación clínica, unidades de cuidados intensivos y áreas de especialidad incluidas dentro del circuito de vigilancia centinela del hospital.
+
+##Período de análisis
+
+El período analizado comprendió desde la semana epidemiológica (SE) 20 de 2024 hasta la SE 5 de 2026, de acuerdo con la disponibilidad y consistencia de los registros incluidos en la base de datos de la UC-IRAG.
+
+La unidad temporal de análisis correspondió a la semana epidemiológica de internación, construida a partir de la fecha de internación según el calendario epidemiológico argentino.
+
+##Unidad de análisis
+
+La unidad de análisis individual estuvo constituida por cada caso nominal notificado al SNVS 2.0 dentro del evento “Unidad Centinela de IRAG”.
+
+La unidad de análisis temporal correspondió a las semanas epidemiológicas de internación de los casos incluidos.
+
+##Definiciones de caso
+
+Se incluyeron pacientes hospitalizados que cumplían con las definiciones operativas vigentes de vigilancia centinela de IRAG e IRAG extendida.
+
+Se definió como caso de Infección Respiratoria Aguda Grave (IRAG) a todo paciente de cualquier edad con infección respiratoria aguda que presentara:
+
+fiebre referida o constatada ≥ 38 °C,
+tos,
+inicio de síntomas en los 10 días previos,
+y requerimiento de internación por criterio clínico.
+
+Se definió como caso de IRAG extendida a pacientes menores de 2 años con infección respiratoria aguda caracterizada por tos o dificultad respiratoria, con inicio de síntomas en los 10 días previos y requerimiento de internación.
+
+En lactantes menores de 6 meses también se consideraron criterios compatibles la presencia de apnea o síndrome séptico sin causa aparente.
+
+##Criterios de inclusión y exclusión
+
+Se incluyeron:
+
+Casos notificados al SNVS 2.0 correspondientes a IRAG e IRAG extendida.
+Pacientes asistidos en el Hospital General de Niños “Dr. Ricardo Gutiérrez”.
+Registros con fecha de internación comprendida entre la SE 20 de 2024 y la SE 5 de 2026.
+
+Se excluyeron:
+
+Registros sin fecha de internación.
+Registros sin condición de egreso.
+Registros sin información laboratorial disponible.
+Casos clasificados como “Casos invalidados por epidemiología”.
+Variables analizadas
+
+Se analizaron variables sociodemográficas, temporales, clínicas, laboratoriales y vinculadas a inmunización y soporte terapéutico.
+
+##Las principales dimensiones incluyeron:
+
+Edad y sexo.
+Semana epidemiológica y año de internación.
+Clasificación IRAG/IRAG extendida.
+Ingreso a cuidados intensivos.
+Fallecimiento.
+Resultados virológicos para Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
+Comorbilidades y factores de riesgo.
+Requerimiento de oxigenoterapia y ventilación mecánica.
+Vacunación antigripal, vacunación materna contra VSR y uso de anticuerpos monoclonales.
+
+##Procesamiento y calidad de los datos
+
+El procesamiento de los datos se realizó mediante scripts desarrollados en lenguaje R utilizando una estructura reproducible y modular.
+
+Se efectuaron procedimientos de:
+
+depuración de registros duplicados,
+control de consistencia,
+verificación de categorías,
+tratamiento de datos faltantes,
+y construcción de variables derivadas.
+
+Los registros duplicados fueron identificados mediante la combinación de los identificadores ID e IDEVENTOCASO, conservando el registro con mayor completitud de información.
+
+Los datos faltantes fueron diferenciados entre valores nulos y códigos explícitos de “sin dato”. Para el cálculo de indicadores se utilizaron únicamente registros con información válida disponible para cada variable analizada.
+
+Además, se construyeron variables derivadas para el análisis epidemiológico, incluyendo:
+
+variable combinada semana epidemiológica-año,
+variable de gravedad clínica,
+y categorías ordenadas de soporte respiratorio.
+Análisis estadístico
+
+Se realizó un análisis descriptivo de las variables incluidas en el estudio.
+
+Las variables categóricas fueron resumidas mediante frecuencias absolutas y relativas. Para el análisis temporal se calcularon indicadores semanales de casos, hospitalización, ingreso a unidades de cuidados intensivos y letalidad.
+
+Los resultados fueron presentados mediante tablas, gráficos y visualizaciones automatizadas desarrolladas en R y renderizadas mediante Quarto.
+
+# Resultados
+
+## Caracterización general de los casos
+Caracterización general de los casos
+
+Entre la semana epidemiológica (SE) 20 de 2024 y la SE 5 de 2026 se incluyeron en la vigilancia centinela pacientes hospitalizados con diagnóstico de Infección Respiratoria Aguda Grave (IRAG) e IRAG extendida asistidos en el Hospital General de Niños “Dr. Ricardo Gutiérrez”.
+
+Los casos fueron identificados mediante vigilancia epidemiológica activa y sistemática en las distintas salas de internación incluidas en el circuito de vigilancia de la UC-IRAG. La información relevada permitió integrar variables demográficas, clínicas, laboratoriales y de evolución durante la internación.
+
+A continuación, se presenta la caracterización general de los casos incluidos en el análisis.
+
+# Tabla general de casos IRAG e IRAG extendida
+# Distribución de casos por grupo etario
+# Distribución de casos por sexo
+
+La población incluida estuvo conformada predominantemente por pacientes pediátricos menores de 5 años, observándose una elevada proporción de casos en lactantes menores de 12 meses.
+
+# Gráfico distribución etaria
+
+## Evolución temporal
+Evolución temporal de los casos
+
+Se analizó la evolución temporal de los casos de IRAG e IRAG extendida según semana epidemiológica de internación, con el objetivo de identificar patrones de circulación, comportamiento estacional y variaciones en la carga de enfermedad durante el período analizado.
+
+# Curva epidémica semanal IRAG e IRAGe
+
+El comportamiento temporal de los casos mostró variaciones estacionales compatibles con la circulación habitual de virus respiratorios en población pediátrica.
+
+# Hospitalizaciones por IRAG
+# Proporción de ingresos a UCI
+# Tasa de letalidad
+
+## Distribución por grupos etarios y sexo
+Se analizó la distribución de los casos incluidos según grupo etario y sexo, con el objetivo de caracterizar el perfil demográfico de la población hospitalizada bajo vigilancia centinela.
+
+# Tabla de distribución por grupos etarios
+
+La mayor proporción de casos correspondió a lactantes y niños menores de 5 años, especialmente en los grupos de menor edad, lo que refleja la elevada carga de enfermedad respiratoria grave en población pediátrica temprana.
+
+# Gráfico de distribución etaria
+
+La distribución por sexo mostró una participación similar entre pacientes femeninos y masculinos, con leves variaciones según grupo etario y período epidemiológico analizado.
+
+# Tabla distribución por sexo
+# Gráfico distribución por sexo
+
+La caracterización demográfica de los casos permite identificar los grupos poblacionales con mayor carga de hospitalización por infecciones respiratorias agudas graves y orientar estrategias de vigilancia, prevención y atención clínica.
+
+## Vigilancia virológica
+
+a vigilancia laboratorial integrada permitió caracterizar la circulación de los principales virus respiratorios detectados en los casos incluidos en la UC-IRAG durante el período analizado.
+
+Los resultados de laboratorio provinieron del Laboratorio de Virología del Hospital General de Niños “Dr. Ricardo Gutiérrez”, integrante de la Red Nacional de Laboratorios para vigilancia de virus respiratorios. Las determinaciones incluyeron Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
+
+# Tabla resumen de resultados virológicos
+# Positividad viral por semana epidemiológica
+
+La circulación viral presentó variaciones temporales a lo largo del período de análisis, observándose diferencias en la predominancia relativa de los distintos virus respiratorios según la semana epidemiológica y el año analizado.
+
+# Curva temporal de VSR
+# Curva temporal de Influenza
+# Curva temporal de SARS-CoV-2
+
+El Virus Sincicial Respiratorio representó uno de los principales agentes detectados en pacientes hospitalizados, especialmente en los grupos de menor edad, mientras que Influenza y SARS-CoV-2 mostraron patrones diferenciales de circulación durante el período estudiado.
+
+# Distribución viral por grupo etario
+
+## Comorbilidades
+Se analizaron las principales comorbilidades registradas en los pacientes hospitalizados con IRAG e IRAG extendida, con el objetivo de caracterizar factores asociados a mayor vulnerabilidad y potencial gravedad clínica.
+
+# Presencia de comorbilidades
+
+Una proporción relevante de los pacientes presentó al menos una comorbilidad registrada al momento de la internación.
+
+# Frecuencia de tipos de comorbilidades
+
+Entre las comorbilidades más frecuentemente observadas se incluyeron antecedentes de prematurez, enfermedades respiratorias crónicas, inmunocompromiso y enfermedades neurológicas crónicas.
+
+La caracterización de estas condiciones resulta relevante para comprender el perfil clínico de los pacientes hospitalizados y orientar estrategias de prevención y manejo clínico.
+
+## Internación y gravedad
+
+e evaluaron indicadores vinculados a gravedad clínica y utilización de servicios de salud, incluyendo ingreso a unidades de cuidados intensivos, requerimiento de soporte respiratorio y ventilación mecánica.
+
+# Ingreso a UCI
+# Casos graves
+
+Una proporción de los pacientes incluidos requirió cuidados intensivos y diferentes modalidades de soporte respiratorio durante la internación.
+
+# Distribución de soporte respiratorio
+# Uso de ventilación mecánica
+
+El análisis de gravedad permitió identificar la carga asistencial asociada a las infecciones respiratorias graves en población pediátrica y describir la complejidad clínica de los casos hospitalizados.
+
+# Tratamientos recibidos
+
+## Soporte respiratorio y tratamiento
+
+
+## Inmunizaciones
+Estrategias de inmunización y prevención
+
+Se analizaron variables relacionadas con estrategias de prevención disponibles para virus respiratorios, incluyendo vacunación antigripal, vacunación materna y uso de anticuerpos monoclonales.
+
+# Vacunación antigripal
+
+En pacientes menores de 6 meses se evaluó además el antecedente de vacunación materna antigripal y vacunación materna contra Virus Sincicial Respiratorio.
+
+# Vacunación materna antigripal
+# Vacunación materna VSR
+
+También se describió el antecedente de administración de anticuerpos monoclonales para prevención de VSR en lactantes menores de 6 meses.
+
+# Palivizumab / Nirsevimab
+
+La incorporación de estas variables permite fortalecer el monitoreo epidemiológico de estrategias preventivas implementadas en población pediátrica y materna.
+
+## Mortalidad
+Se analizaron los casos fallecidos registrados durante el período de estudio, incluyendo distribución etaria, presencia de comorbilidades y letalidad.
+
+# Resumen de fallecidos
+# Distribución etaria de fallecidos
+# Fallecidos con comorbilidades
+
+La mayoría de los casos fallecidos presentó antecedentes de comorbilidades y requirió cuidados intensivos durante la internación.
+
+El análisis de mortalidad constituye un componente central de la vigilancia epidemiológica de IRAG, permitiendo monitorear la severidad de circulación viral y la carga de enfermedad asociada a infecciones respiratorias graves en población pediátrica.
+
+# Calidad y completitud de los datos
+Se realizaron procedimientos sistemáticos de control de calidad sobre las bases utilizadas en el análisis, incluyendo verificación de duplicados, evaluación de consistencia interna y análisis de datos faltantes.
+
+Los registros duplicados fueron identificados mediante la combinación de las variables ID e IDEVENTOCASO, conservando el registro con mayor completitud de información en aquellos casos en que se detectaron duplicaciones.
+
+# Resumen de duplicados identificados y depurados
+
+Asimismo, se evaluó la proporción de datos faltantes para las principales variables clínicas, laboratoriales y terapéuticas incluidas en el análisis.
+
+# Tabla de completitud de variables
+
+Se observaron diferencias en el nivel de completitud entre variables, particularmente en aquellas relacionadas con soporte respiratorio y tratamientos específicos, lo que debe considerarse al interpretar algunos indicadores.
+
+# Gráfico de porcentaje de datos faltantes
+
+La evaluación periódica de la calidad de los datos constituye un componente central de la vigilancia centinela, permitiendo fortalecer la consistencia, oportunidad y utilidad de la información epidemiológica generada por la UC-IRAG.
+
+# Consideraciones finales
+La vigilancia epidemiológica desarrollada por la Unidad Centinela de Infección Respiratoria Aguda Grave del Hospital General de Niños “Dr. Ricardo Gutiérrez” permitió caracterizar de manera sistemática la carga de enfermedad respiratoria grave en población pediátrica hospitalizada durante el período analizado.
+
+La integración de información clínica, epidemiológica y laboratorial posibilitó describir la evolución temporal de los casos, la circulación de virus respiratorios, los perfiles de gravedad clínica y las principales características de los pacientes incluidos en la vigilancia.
+
+El monitoreo continuo de indicadores de hospitalización, utilización de cuidados intensivos, soporte respiratorio y mortalidad constituye una herramienta relevante para la detección temprana de cambios epidemiológicos y para el fortalecimiento de la capacidad de respuesta del sistema de salud frente a eventos respiratorios de importancia sanitaria.
+
+Asimismo, la incorporación de variables vinculadas a estrategias de inmunización y prevención aporta información útil para el seguimiento de intervenciones destinadas a reducir la carga de enfermedad respiratoria grave en población pediátrica.
+
+La automatización del procesamiento y análisis de datos mediante herramientas reproducibles desarrolladas en R y Quarto contribuye a mejorar la oportunidad, estandarización y sostenibilidad de los productos de vigilancia epidemiológica, facilitando la generación periódica de reportes y visualizaciones para equipos de salud y autoridades sanitarias.
+
+El fortalecimiento continuo de la calidad y completitud de los registros constituye un aspecto prioritario para optimizar la vigilancia centinela y consolidar la utilidad de la información generada para la toma de decisiones en salud pública.
