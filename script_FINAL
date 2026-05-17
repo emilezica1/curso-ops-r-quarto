@@ -292,16 +292,16 @@ print(table(base$VAC_ANTIGRIPAL_MATERNA, useNA = "ifany"))
 base <- base |>
   mutate(
     caso_grave = case_when(
-      CUIDADO_INTENSIVO == "SI" | VM == "SI" | OXIGENOTERAPIA_ALTO_FLUJO == "SI" ~ "SI",
+      CUIDADO_INTENSIVO == "SI" | VM == "1" | OXIGENOTERAPIA_ALTO_FLUJO == "1" ~ "SI",
       !is.na(CUIDADO_INTENSIVO) | !is.na(VM) | !is.na(OXIGENOTERAPIA_ALTO_FLUJO) ~ "NO",
       TRUE ~ NA_character_
     ),
     caso_grave = factor(caso_grave, levels = c("SI", "NO")),
     
     soporte = case_when(
-      VM == "SI"                        ~ "Ventilación mecánica",
-      OXIGENOTERAPIA_ALTO_FLUJO == "SI" ~ "Alto flujo",
-      OXIGENOTERAPIA_BAJO_FLUJO == "SI" ~ "Bajo flujo",
+      VM == "1"                        ~ "Ventilación mecánica",
+      OXIGENOTERAPIA_ALTO_FLUJO == "1" ~ "Alto flujo",
+      OXIGENOTERAPIA_BAJO_FLUJO == "1" ~ "Bajo flujo",
       !is.na(OXIGENOTERAPIA_BAJO_FLUJO) |
         !is.na(OXIGENOTERAPIA_ALTO_FLUJO) |
         !is.na(VM)                      ~ "Sin soporte",
