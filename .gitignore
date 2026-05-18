@@ -1,0 +1,13 @@
+.Rhistory
+.RData
+.Rproj.user/
+
+*.html
+*_files/
+
+*.xlsx
+*.xls
+*.csv
+
+revision_indicador_uci_mayor_100.csv
+

@@ -1,220 +1,762 @@
 ---
-title: "Reporte automatizado de vigilancia epidemiológica"
-subtitle: "Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG)"
-author: "Hospital de Niños Ricardo Gutiérrez"
+title: "Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) · Hospital de Niños Dr. Ricardo Gutiérrez"
+author: "Equipo Buenos Aires - CABA"
 date: today
+lang: es
 format:
   html:
     toc: true
     toc-depth: 3
+    toc-location: left
     number-sections: true
     theme: cosmo
+    page-layout: full
+    smooth-scroll: true
+    code-fold: false
 execute:
   echo: false
   warning: false
   message: false
+editor:
+  markdown:
+    wrap: sentence
 ---
+
+```{css}
+:root {
+  --azul-gcba: #0072bc;
+  --azul-profundo: #113b5b;
+  --azul-noche: #082f49;
+  --celeste-suave: #eaf7ff;
+  --celeste-linea: #7cc7e8;
+  --gris-fondo: #f6f9fc;
+  --gris-texto: #344054;
+  --gris-suave: #667085;
+  --borde: #d8e2ea;
+  --sombra: 0 18px 45px rgba(16, 24, 40, 0.10);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--gris-texto);
+  background:
+    radial-gradient(circle at top right, rgba(0,114,188,0.08), transparent 28rem),
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 42%, #ffffff 100%);
+}
+
+/* Barra institucional superior */
+body::before {
+  content: "";
+  display: block;
+  width: 100vw;
+  height: 72px;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.10) 0 1px, transparent 1px 24px),
+    linear-gradient(135deg, var(--azul-noche), var(--azul-gcba));
+  border-bottom: 5px solid var(--celeste-linea);
+  box-shadow: 0 8px 28px rgba(8, 47, 73, .22);
+}
+
+/* Tarjeta de portada */
+.quarto-title-block {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  background:
+    linear-gradient(135deg, rgba(8,47,73,.96), rgba(0,114,188,.92)),
+    radial-gradient(circle at 90% 15%, rgba(255,255,255,.28), transparent 18rem);
+  padding: 2.6rem 2.8rem 2.2rem 2.8rem;
+  border-radius: 0 0 34px 34px;
+  margin: -72px 0 2.4rem 0;
+  min-height: 220px;
+  box-shadow: var(--sombra);
+  border-bottom: 1px solid rgba(255,255,255,.28);
+}
+
+/* Logo del hospital */
+.quarto-title-block::before {
+  content: "";
+  position: absolute;
+  top: 1.1rem;
+  left: 2.2rem;
+  width: 88px;
+  height: 88px;
+  background: #ffffff url("hospital guti.jpg") center / contain no-repeat;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow: 0 14px 30px rgba(0,0,0,.18);
+  z-index: 1;
+}
+
+.quarto-title-block::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  bottom: -110px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.18), transparent 65%);
+}
+
+.quarto-title-block .quarto-title,
+.quarto-title-block .quarto-title-meta {
+  position: relative;
+  z-index: 2;
+  padding-left: 7.3rem;
+}
+
+.quarto-title-block .title {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: .02em;
+  line-height: 1.15;
+  max-width: 1050px;
+  text-wrap: balance;
+  border: none;
+  padding-bottom: 0;
+  margin-top: 0;
+}
+
+.quarto-title-block .quarto-title-meta {
+  margin-top: 1.4rem;
+  display: flex;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.quarto-title-block .quarto-title-meta-heading {
+  color: rgba(255,255,255,.74);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .74rem;
+  font-weight: 700;
+}
+
+.quarto-title-block .quarto-title-meta-contents,
+.quarto-title-block .quarto-title-meta-contents p {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Contenido */
+#quarto-document-content {
+  max-width: 1100px;
+}
+
+h1, h2, h3 {
+  color: var(--azul-profundo);
+  font-weight: 800;
+}
+
+h1 {
+  border-bottom: 3px solid var(--azul-gcba);
+  padding-bottom: .45rem;
+  margin-top: 2.4rem;
+  letter-spacing: .01em;
+}
+
+h2 {
+  margin-top: 1.9rem;
+  color: #174b70;
+}
+
+h3 {
+  color: #236083;
+}
+
+p {
+  line-height: 1.68;
+}
+
+ul, ol {
+  line-height: 1.62;
+}
+
+/* Índice lateral tipo navegación de informe */
+#quarto-margin-sidebar,
+.sidebar.margin-sidebar {
+  padding-top: 0.6rem;
+}
+
+#TOC {
+  position: sticky;
+  top: 1.1rem;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--borde);
+  border-left: 5px solid var(--azul-gcba);
+  border-radius: 18px;
+  padding: 1rem 1rem 1.1rem 1rem;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, .08);
+}
+
+#toc-title {
+  color: var(--azul-profundo);
+  font-size: .86rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 800;
+  margin-bottom: .7rem;
+}
+
+#TOC .nav-link {
+  color: #344054;
+  border-radius: 10px;
+  padding: .32rem .45rem;
+  font-size: .92rem;
+}
+
+#TOC .nav-link.active,
+#TOC .nav-link:hover {
+  color: var(--azul-gcba);
+  background: var(--celeste-suave);
+  font-weight: 700;
+}
+
+/* Bloques visuales ya usados */
+.card-metodo, .card-lectura, .card-nota {
+  border: 1px solid var(--borde);
+  border-left: 6px solid var(--azul-gcba);
+  background: rgba(246, 249, 252, .92);
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  margin: 1rem 0 1.4rem 0;
+  box-shadow: 0 8px 20px rgba(16,24,40,.045);
+}
+
+.card-lectura {
+  border-left-color: #4dac26;
+  background: #f2fbef;
+}
+
+.card-nota {
+  border-left-color: #f2c94c;
+  background: #fff9e6;
+}
+
+.panel-tabset {
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.07);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid var(--borde);
+}
+
+.nav-tabs .nav-link {
+  border: 0;
+  color: var(--gris-suave);
+  font-weight: 700;
+  border-radius: 12px 12px 0 0;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--azul-gcba);
+  background: var(--celeste-suave);
+  border-bottom: 3px solid var(--azul-gcba);
+}
+
+.gt_table {
+  font-size: 0.92rem !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.cell-output-display:has(.gt_table),
+.cell-output-display:has(.plotly) {
+  background: #ffffff;
+  border-radius: 16px;
+}
+
+.plotly.html-widget {
+  margin-top: .6rem;
+  margin-bottom: 1rem;
+}
+
+.caption, .fig-caption {
+  color: #667085;
+  font-size: .9rem;
+}
+
+@media (max-width: 900px) {
+  body::before {
+    height: 58px;
+  }
+
+  .quarto-title-block {
+    margin-top: -58px;
+    padding: 1.5rem 1.2rem 1.8rem 1.2rem;
+    min-height: auto;
+  }
+
+  .quarto-title-block::before {
+    position: relative;
+    display: block;
+    top: auto;
+    left: auto;
+    width: 76px;
+    height: 76px;
+    margin-bottom: 1rem;
+  }
+
+  .quarto-title-block .quarto-title,
+  .quarto-title-block .quarto-title-meta {
+    padding-left: 0;
+  }
+
+  .quarto-title-block .title {
+    font-size: 1.7rem;
+  }
+}
+
+body {
+  padding-top: 76px;
+}
+
+/* Barra superior fija, de punta a punta */
+body::before {
+  content: "Hospital de Niños Dr. Ricardo Gutiérrez";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 72px;
+  margin: 0 !important;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.98rem;
+  letter-spacing: .02em;
+  text-align: center;
+  background:
+    url("hospital guti.jpg") no-repeat calc(50% - 610px) center / 52px auto,
+    linear-gradient(90deg, rgba(255,255,255,.10) 0 1px, transparent 1px 26px),
+    linear-gradient(135deg, #062b44 0%, #005f9e 52%, #0072bc 100%);
+  border-bottom: 5px solid #7cc7e8;
+  box-shadow: 0 10px 32px rgba(8, 47, 73, .24);
+}
+
+/* La portada ya no se superpone con la barra */
+.quarto-title-block {
+  margin-top: 0 !important;
+}
+
+/* El índice acompaña al hacer scroll y queda debajo del nav */
+#TOC {
+  position: sticky !important;
+  top: 5.8rem !important;
+  max-height: calc(100vh - 7rem);
+  overflow-y: auto;
+}
+
+/* Encabezado interno del índice */
+#TOC::before {
+  content: "UC-IRAG · Navegación";
+  display: block;
+  color: #ffffff;
+  background: linear-gradient(135deg, #113b5b, #0072bc);
+  margin: -1rem -1rem .85rem -1rem;
+  padding: .75rem 1rem;
+  border-radius: 13px 13px 0 0;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+/* Para que los saltos no queden tapados por el nav fijo */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
+@media (max-width: 900px) {
+  body {
+    padding-top: 64px;
+  }
+
+  body::before {
+    height: 62px;
+    content: "UC-IRAG · Hospital Gutiérrez";
+    font-size: .9rem;
+    background:
+      url("hospital guti.jpg") no-repeat 1rem center / 42px auto,
+      linear-gradient(135deg, #062b44 0%, #0072bc 100%);
+    padding-left: 3.6rem;
+    justify-content: flex-start;
+    width: 100vw;
+  }
+
+  #TOC {
+    top: 4.9rem !important;
+  }
+}
+
+```
+
+
+```{r setup}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(lubridate)
+library(gt)
+library(plotly)
+
+# Esta función carga cada script sin mostrar en el HTML los cat(), print(),
+# tablas de control o mensajes intermedios que puedan estar dentro de esos archivos.
+source_silencioso <- function(archivo) {
+  if (file.exists(archivo)) {
+    suppressWarnings(
+      suppressMessages(
+        invisible(capture.output(source(archivo, local = knitr::knit_global())))
+      )
+    )
+  }
+}
+
+source_silencioso("Ana_mi_script.R")
+source_silencioso("patricia_mi_script.R")
+source_silencioso("micaela_mi_script.R")
+source_silencioso("Emiliano_mi_script.R")
+source_silencioso("mavi_mi_script.R")
+source_silencioso("mavi_bloque_adicional_influenza.R")
+
+# Conversión simple de ggplot a gráfico interactivo.
+# Se usa sólo en los chunks de resultados, no modifica los objetos originales.
+grafico_interactivo <- function(grafico) {
+  plotly::config(
+    plotly::ggplotly(grafico),
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("lasso2d", "select2d")
+  )
+}
+```
+
 
 # Introducción
 
-Las infecciones respiratorias agudas (IRA) continúan representando una de las principales causas de morbimortalidad y utilización de servicios de salud en población pediátrica. La vigilancia epidemiológica integrada de estas infecciones, mediante la articulación de los componentes clínico, epidemiológico y laboratorial, constituye una herramienta fundamental para caracterizar la situación epidemiológica, detectar cambios en los patrones de circulación viral y orientar oportunamente las estrategias de prevención y control.
+Las infecciones respiratorias agudas (IRA) continúan representando una de las principales causas de morbimortalidad y utilización de servicios de salud en población pediátrica.
+La vigilancia epidemiológica integrada de estas infecciones, mediante la articulación de los componentes clínico, epidemiológico y laboratorial, constituye una herramienta fundamental para caracterizar la situación epidemiológica, detectar cambios en los patrones de circulación viral y orientar oportunamente las estrategias de prevención y control.
 
-En Argentina, la vigilancia de las infecciones respiratorias agudas se desarrolla a través de múltiples estrategias complementarias, incluyendo la vigilancia universal, las redes laboratoriales y genómicas, y la vigilancia centinela de enfermedad respiratoria aguda grave (IRAG). En este marco, las Unidades Centinela de IRAG (UC-IRAG) permiten realizar una vigilancia activa y sistemática de pacientes hospitalizados con infecciones respiratorias graves, aportando información detallada sobre características demográficas, clínicas, evolución, utilización de servicios de salud y etiología viral.
+En Argentina, la vigilancia de las infecciones respiratorias agudas se desarrolla a través de múltiples estrategias complementarias, incluyendo la vigilancia universal, las redes laboratoriales y genómicas, y la vigilancia centinela de enfermedad respiratoria aguda grave (IRAG).
+En este marco, las Unidades Centinela de IRAG (UC-IRAG) permiten realizar una vigilancia activa y sistemática de pacientes hospitalizados con infecciones respiratorias graves, aportando información detallada sobre características demográficas, clínicas, evolución, utilización de servicios de salud y etiología viral.
 
-La Unidad Centinela de IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez” inició sus actividades en el año 2024 como parte de la Red Argentina de Vigilancia Centinela de IRAG. El hospital constituye un centro pediátrico de referencia de tercer nivel para la Ciudad Autónoma de Buenos Aires y otras jurisdicciones del país, con capacidad de atención de pacientes complejos y soporte intensivo pediátrico y neonatal.
+La Unidad Centinela de IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez” inició sus actividades en el año 2024 como parte de la Red Argentina de Vigilancia Centinela de IRAG.
+El hospital constituye un centro pediátrico de referencia de tercer nivel para la Ciudad Autónoma de Buenos Aires y otras jurisdicciones del país, con capacidad de atención de pacientes complejos y soporte intensivo pediátrico y neonatal.
 
 La vigilancia desarrollada en esta unidad se basa en la identificación activa y sistemática de casos hospitalizados que cumplen criterios de IRAG e IRAG extendida, el seguimiento clínico durante la internación y la integración de la información clínica, epidemiológica y laboratorial en el Sistema Nacional de Vigilancia de la Salud (SNVS 2.0).
 
 El presente reporte automatizado tiene como finalidad sistematizar el análisis periódico de la información generada por la UC-IRAG del Hospital de Niños Ricardo Gutiérrez, promoviendo la disponibilidad de datos oportunos, reproducibles y de calidad para fortalecer la vigilancia epidemiológica, el monitoreo de tendencias y la toma de decisiones en salud pública.
 
 # Objetivos
-Objetivo general
+
+## Objetivo general
 
 Desarrollar un reporte automatizado, reproducible y actualizado de vigilancia epidemiológica de la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) del Hospital General de Niños “Dr. Ricardo Gutiérrez”, que permita transformar la información recolectada en evidencia útil para el monitoreo de tendencias, la caracterización clínica y epidemiológica de los casos y la toma de decisiones en salud pública.
 
-Objetivos específicos
-Describir las características demográficas y clínicas de los pacientes hospitalizados con IRAG e IRAG extendida incluidos en la vigilancia centinela.
-Analizar la evolución temporal de los casos según semana epidemiológica para identificar patrones de circulación y variaciones estacionales.
-Caracterizar la etiología viral de los casos incluidos mediante el análisis de los resultados de laboratorio para virus respiratorios.
-Estimar indicadores vinculados a gravedad y utilización de servicios de salud, incluyendo ingreso a cuidados intensivos, requerimiento de soporte respiratorio y letalidad.
-Describir la frecuencia y distribución de comorbilidades y factores de riesgo asociados a los casos hospitalizados.
-Analizar variables vinculadas a estrategias de prevención e inmunización, incluyendo vacunación antigripal, vacunación materna contra VSR y uso de anticuerpos monoclonales.
-Evaluar la calidad, consistencia y completitud de los datos registrados en la vigilancia centinela.
-Generar productos automatizados de visualización y análisis que faciliten la difusión periódica de la información epidemiológica para equipos de salud y autoridades sanitarias.
+## Objetivos específicos
+
+- Describir las características demográficas y clínicas de los pacientes hospitalizados con IRAG e IRAG extendida incluidos en la vigilancia centinela.
+- Analizar la evolución temporal de los casos según semana epidemiológica para identificar patrones de circulación y variaciones estacionales.
+- Caracterizar la etiología viral de los casos incluidos mediante el análisis de los resultados de laboratorio para virus respiratorios.
+- Estimar indicadores vinculados a gravedad y utilización de servicios de salud, incluyendo ingreso a cuidados intensivos, requerimiento de soporte respiratorio y letalidad.
+- Describir la frecuencia y distribución de comorbilidades y factores de riesgo asociados a los casos hospitalizados.
+- Evaluar la calidad, consistencia y completitud de los datos registrados en la vigilancia centinela.
+
 
 # Metodología
-##Diseño y fuente de datos
+
+## Diseño y fuente de datos
 
 Se realizó un estudio observacional descriptivo basado en los registros de vigilancia epidemiológica de la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) del Hospital General de Niños “Dr. Ricardo Gutiérrez”.
 
 Las fuentes de información utilizadas fueron:
 
-La base de datos nominal anonimizada proveniente del Sistema Nacional de Vigilancia de la Salud (SNVS 2.0), correspondiente al evento “Unidad Centinela de IRAG”, procesada y distribuida semanalmente por el Ministerio de Salud de la Nación.
-La base de datos agrupada de la UC-IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez”, utilizada para el cálculo de indicadores agregados de hospitalización, utilización de unidades de cuidados intensivos y mortalidad.
+- La base de datos nominal anonimizada proveniente del Sistema Nacional de Vigilancia de la Salud (SNVS 2.0), correspondiente al evento “Unidad Centinela de IRAG”, procesada y distribuida semanalmente por el Ministerio de Salud de la Nación.
+- La base de datos agrupada de la UC-IRAG del Hospital General de Niños “Dr. Ricardo Gutiérrez”, utilizada para el cálculo de indicadores agregados de hospitalización, utilización de unidades de cuidados intensivos y mortalidad.
 
 La vigilancia epidemiológica se desarrolló mediante una estrategia activa y sistemática de identificación de casos hospitalizados en salas de internación clínica, unidades de cuidados intensivos y áreas de especialidad incluidas dentro del circuito de vigilancia centinela del hospital.
 
-##Período de análisis
+## Período de análisis
 
 El período analizado comprendió desde la semana epidemiológica (SE) 20 de 2024 hasta la SE 5 de 2026, de acuerdo con la disponibilidad y consistencia de los registros incluidos en la base de datos de la UC-IRAG.
 
 La unidad temporal de análisis correspondió a la semana epidemiológica de internación, construida a partir de la fecha de internación según el calendario epidemiológico argentino.
 
-##Unidad de análisis
+## Unidad de análisis
 
 La unidad de análisis individual estuvo constituida por cada caso nominal notificado al SNVS 2.0 dentro del evento “Unidad Centinela de IRAG”.
 
-La unidad de análisis temporal correspondió a las semanas epidemiológicas de internación de los casos incluidos.
+La unidad de análisis temporal correspondió a las semanas epidemiológicas de internación de los casos incluidos.También se consideraron como unidad analítica las determinaciones de virus respiratorios registradas para cada caso nominal.
 
-##Definiciones de caso
+## Definiciones de caso
 
 Se incluyeron pacientes hospitalizados que cumplían con las definiciones operativas vigentes de vigilancia centinela de IRAG e IRAG extendida.
 
 Se definió como caso de Infección Respiratoria Aguda Grave (IRAG) a todo paciente de cualquier edad con infección respiratoria aguda que presentara:
 
-fiebre referida o constatada ≥ 38 °C,
-tos,
-inicio de síntomas en los 10 días previos,
-y requerimiento de internación por criterio clínico.
+- fiebre referida o constatada ≥ 38 °C;
+- tos;
+- inicio de síntomas en los 10 días previos;
+- requerimiento de internación por criterio clínico.
 
-Se definió como caso de IRAG extendida a pacientes menores de 2 años con infección respiratoria aguda caracterizada por tos o dificultad respiratoria, con inicio de síntomas en los 10 días previos y requerimiento de internación.
+Se definió como caso de IRAG extendida a pacientes < 2 años y >= 60 años con infección respiratoria aguda caracterizada por tos o dificultad respiratoria, con inicio de síntomas en los 10 días previos y requerimiento de internación.
 
 En lactantes menores de 6 meses también se consideraron criterios compatibles la presencia de apnea o síndrome séptico sin causa aparente.
 
-##Criterios de inclusión y exclusión
+## Criterios de inclusión y exclusión
 
 Se incluyeron:
 
-Casos notificados al SNVS 2.0 correspondientes a IRAG e IRAG extendida.
-Pacientes asistidos en el Hospital General de Niños “Dr. Ricardo Gutiérrez”.
-Registros con fecha de internación comprendida entre la SE 20 de 2024 y la SE 5 de 2026.
+- Casos notificados al SNVS 2.0 correspondientes a IRAG e IRAG extendida.
+- Pacientes asistidos en el Hospital General de Niños “Dr. Ricardo Gutiérrez”.
+- Registros con fecha de internación comprendida entre la SE 20 de 2024 y la SE 5 de 2026.
 
 Se excluyeron:
 
-Registros sin fecha de internación.
-Registros sin condición de egreso.
-Registros sin información laboratorial disponible.
-Casos clasificados como “Casos invalidados por epidemiología”.
-Variables analizadas
+- Registros sin fecha de internación.
+- Registros sin condición de egreso.
+- Registros sin información laboratorial disponible.
+- Casos clasificados como “Casos invalidados por epidemiología”.
+
+## Variables analizadas
 
 Se analizaron variables sociodemográficas, temporales, clínicas, laboratoriales y vinculadas a inmunización y soporte terapéutico.
 
-##Las principales dimensiones incluyeron:
+Las principales dimensiones incluyeron:
 
-Edad y sexo.
-Semana epidemiológica y año de internación.
-Clasificación IRAG/IRAG extendida.
-Ingreso a cuidados intensivos.
-Fallecimiento.
-Resultados virológicos para Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
-Comorbilidades y factores de riesgo.
-Requerimiento de oxigenoterapia y ventilación mecánica.
-Vacunación antigripal, vacunación materna contra VSR y uso de anticuerpos monoclonales.
+- Edad y sexo.
+- Semana epidemiológica y año de internación.
+- Clasificación IRAG/IRAG extendida.
+- Ingreso a cuidados intensivos.
+- Fallecimiento.
+- Resultados virológicos para Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
+- Comorbilidades y factores de riesgo.
+- Requerimiento de oxigenoterapia y ventilación mecánica.
+- Vacunación antigripal, vacunación materna contra VSR y uso de anticuerpos monoclonales.
 
-##Procesamiento y calidad de los datos
+## Procesamiento y calidad de los datos
 
 El procesamiento de los datos se realizó mediante scripts desarrollados en lenguaje R utilizando una estructura reproducible y modular.
 
 Se efectuaron procedimientos de:
 
-depuración de registros duplicados,
-control de consistencia,
-verificación de categorías,
-tratamiento de datos faltantes,
-y construcción de variables derivadas.
+- depuración de registros duplicados;
+- control de consistencia;
+- verificación de categorías;
+- tratamiento de datos faltantes;
+- construcción de variables derivadas.
 
 Los registros duplicados fueron identificados mediante la combinación de los identificadores ID e IDEVENTOCASO, conservando el registro con mayor completitud de información.
 
-Los datos faltantes fueron diferenciados entre valores nulos y códigos explícitos de “sin dato”. Para el cálculo de indicadores se utilizaron únicamente registros con información válida disponible para cada variable analizada.
+Los datos faltantes fueron diferenciados entre valores nulos y códigos explícitos de “sin dato”.
+Para el cálculo de indicadores se utilizaron únicamente registros con información válida disponible para cada variable analizada.
 
 Además, se construyeron variables derivadas para el análisis epidemiológico, incluyendo:
 
-variable combinada semana epidemiológica-año,
-variable de gravedad clínica,
-y categorías ordenadas de soporte respiratorio.
-Análisis estadístico
+- variable combinada semana epidemiológica-año;
+- variable de gravedad clínica;
+- categorías ordenadas de soporte respiratorio.
+
+## Análisis estadístico
 
 Se realizó un análisis descriptivo de las variables incluidas en el estudio.
 
-Las variables categóricas fueron resumidas mediante frecuencias absolutas y relativas. Para el análisis temporal se calcularon indicadores semanales de casos, hospitalización, ingreso a unidades de cuidados intensivos y letalidad.
+Las variables categóricas fueron resumidas mediante frecuencias absolutas y relativas.
+Para el análisis temporal se calcularon indicadores semanales de casos, hospitalización, ingreso a unidades de cuidados intensivos y letalidad.
 
 Los resultados fueron presentados mediante tablas, gráficos y visualizaciones automatizadas desarrolladas en R y renderizadas mediante Quarto.
 
 # Resultados
 
 ## Caracterización general de los casos
-Caracterización general de los casos
 
 Entre la semana epidemiológica (SE) 20 de 2024 y la SE 5 de 2026 se incluyeron en la vigilancia centinela pacientes hospitalizados con diagnóstico de Infección Respiratoria Aguda Grave (IRAG) e IRAG extendida asistidos en el Hospital General de Niños “Dr. Ricardo Gutiérrez”.
 
-Los casos fueron identificados mediante vigilancia epidemiológica activa y sistemática en las distintas salas de internación incluidas en el circuito de vigilancia de la UC-IRAG. La información relevada permitió integrar variables demográficas, clínicas, laboratoriales y de evolución durante la internación.
+Los casos fueron identificados mediante vigilancia epidemiológica activa y sistemática en las distintas salas de internación incluidas en el circuito de vigilancia de la UC-IRAG.
+La información relevada permitió integrar variables demográficas, clínicas, laboratoriales y de evolución durante la internación.
 
 A continuación, se presenta la caracterización general de los casos incluidos en el análisis.
 
-# Tabla general de casos IRAG e IRAG extendida
-# Distribución de casos por grupo etario
-# Distribución de casos por sexo
+::: {.panel-tabset}
+
+### Resumen general
+
+```{r}
+tabla_indicadores_globales
+```
+
+### Grupo etario
+
+```{r}
+tabla_edad
+```
+
+### Sexo
+
+```{r}
+tabla_sexo
+```
+
+:::
 
 La población incluida estuvo conformada predominantemente por pacientes pediátricos menores de 5 años, observándose una elevada proporción de casos en lactantes menores de 12 meses.
 
-# Gráfico distribución etaria
+### Gráfico de distribución etaria
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_edad), displaylogo = FALSE)
+```
 
 ## Evolución temporal
-Evolución temporal de los casos
 
 Se analizó la evolución temporal de los casos de IRAG e IRAG extendida según semana epidemiológica de internación, con el objetivo de identificar patrones de circulación, comportamiento estacional y variaciones en la carga de enfermedad durante el período analizado.
 
-# Curva epidémica semanal IRAG e IRAGe
+### Curva epidémica semanal IRAG e IRAG extendida
 
+```{r}
+plotly::config(plotly::ggplotly(grafico_curva_epidemica), displaylogo = FALSE)
+```
+
+::: {.card-lectura}
 El comportamiento temporal de los casos mostró variaciones estacionales compatibles con la circulación habitual de virus respiratorios en población pediátrica.
+:::
 
-# Hospitalizaciones por IRAG
-# Proporción de ingresos a UCI
-# Tasa de letalidad
+::: {.panel-tabset}
+
+### Hospitalizaciones por IRAG
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_hospitalizaciones), displaylogo = FALSE)
+```
+
+### Proporción de ingresos a UCI
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_uci), displaylogo = FALSE)
+```
+
+### Tasa de letalidad
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_letalidad), displaylogo = FALSE)
+```
+
+:::
 
 ## Distribución por grupos etarios y sexo
+
 Se analizó la distribución de los casos incluidos según grupo etario y sexo, con el objetivo de caracterizar el perfil demográfico de la población hospitalizada bajo vigilancia centinela.
 
-# Tabla de distribución por grupos etarios
+::: {.panel-tabset}
+
+### Tabla por grupo etario
+
+```{r}
+tabla_edad
+```
+
+### Gráfico por grupo etario
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_edad), displaylogo = FALSE)
+```
+
+### Tabla por sexo
+
+```{r}
+tabla_sexo
+```
+
+### Gráfico por sexo
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_sexo), displaylogo = FALSE)
+```
+
+:::
 
 La mayor proporción de casos correspondió a lactantes y niños menores de 5 años, especialmente en los grupos de menor edad, lo que refleja la elevada carga de enfermedad respiratoria grave en población pediátrica temprana.
 
-# Gráfico de distribución etaria
-
 La distribución por sexo mostró una participación similar entre pacientes femeninos y masculinos, con leves variaciones según grupo etario y período epidemiológico analizado.
-
-# Tabla distribución por sexo
-# Gráfico distribución por sexo
 
 La caracterización demográfica de los casos permite identificar los grupos poblacionales con mayor carga de hospitalización por infecciones respiratorias agudas graves y orientar estrategias de vigilancia, prevención y atención clínica.
 
 ## Vigilancia virológica
 
-a vigilancia laboratorial integrada permitió caracterizar la circulación de los principales virus respiratorios detectados en los casos incluidos en la UC-IRAG durante el período analizado.
+La vigilancia laboratorial integrada permitió caracterizar la circulación de los principales virus respiratorios detectados en los casos incluidos en la UC-IRAG durante el período analizado.
 
-Los resultados de laboratorio provinieron del Laboratorio de Virología del Hospital General de Niños “Dr. Ricardo Gutiérrez”, integrante de la Red Nacional de Laboratorios para vigilancia de virus respiratorios. Las determinaciones incluyeron Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
+Los resultados de laboratorio provinieron del Laboratorio de Virología del Hospital General de Niños “Dr. Ricardo Gutiérrez”, integrante de la Red Nacional de Laboratorios para vigilancia de virus respiratorios.
+Las determinaciones incluyeron Virus Sincicial Respiratorio (VSR), Influenza y SARS-CoV-2.
 
-# Tabla resumen de resultados virológicos
-# Positividad viral por semana epidemiológica
+::: {.panel-tabset}
+
+### Tabla resumen de resultados virológicos
+
+```{r}
+tabla_positividad_viral
+```
+
+### Positividad viral por semana epidemiológica
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_positividad_viral), displaylogo = FALSE)
+```
+
+### Distribución viral por grupo etario
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_viral_edad), displaylogo = FALSE)
+```
+
+:::
 
 La circulación viral presentó variaciones temporales a lo largo del período de análisis, observándose diferencias en la predominancia relativa de los distintos virus respiratorios según la semana epidemiológica y el año analizado.
 
-# Curva temporal de VSR
-# Curva temporal de Influenza
-# Curva temporal de SARS-CoV-2
-
 El Virus Sincicial Respiratorio representó uno de los principales agentes detectados en pacientes hospitalizados, especialmente en los grupos de menor edad, mientras que Influenza y SARS-CoV-2 mostraron patrones diferenciales de circulación durante el período estudiado.
 
-# Distribución viral por grupo etario
-
 ## Comorbilidades
+
 Se analizaron las principales comorbilidades registradas en los pacientes hospitalizados con IRAG e IRAG extendida, con el objetivo de caracterizar factores asociados a mayor vulnerabilidad y potencial gravedad clínica.
 
-# Presencia de comorbilidades
+::: {.panel-tabset}
+
+### Presencia de comorbilidades
+
+```{r}
+gt::gt(resumen_comorbilidad)
+```
+
+### Frecuencia de tipos de comorbilidades
+
+```{r}
+tabla_comorbilidades
+```
+
+### Gráfico de comorbilidades
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_comorbilidades), displaylogo = FALSE)
+```
+
+:::
 
 Una proporción relevante de los pacientes presentó al menos una comorbilidad registrada al momento de la internación.
-
-# Frecuencia de tipos de comorbilidades
 
 Entre las comorbilidades más frecuentemente observadas se incluyeron antecedentes de prematurez, enfermedades respiratorias crónicas, inmunocompromiso y enfermedades neurológicas crónicas.
 
@@ -222,70 +764,184 @@ La caracterización de estas condiciones resulta relevante para comprender el pe
 
 ## Internación y gravedad
 
-e evaluaron indicadores vinculados a gravedad clínica y utilización de servicios de salud, incluyendo ingreso a unidades de cuidados intensivos, requerimiento de soporte respiratorio y ventilación mecánica.
+Se evaluaron indicadores vinculados a gravedad clínica y utilización de servicios de salud, incluyendo ingreso a unidades de cuidados intensivos, requerimiento de soporte respiratorio y ventilación mecánica.
 
-# Ingreso a UCI
-# Casos graves
+::: {.panel-tabset}
+
+### Ingreso a UCI
+
+```{r}
+gt::gt(ingreso_uci_resumen)
+```
+
+### Casos graves
+
+```{r}
+gt::gt(resumen_casos_graves)
+```
+
+### Distribución de soporte respiratorio
+
+```{r}
+tabla_soporte
+```
+
+### Gráfico de soporte respiratorio
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_soporte), displaylogo = FALSE)
+```
+
+### Tratamientos recibidos
+
+```{r}
+gt::gt(resumen_tratamiento)
+```
+
+:::
 
 Una proporción de los pacientes incluidos requirió cuidados intensivos y diferentes modalidades de soporte respiratorio durante la internación.
 
-# Distribución de soporte respiratorio
-# Uso de ventilación mecánica
-
 El análisis de gravedad permitió identificar la carga asistencial asociada a las infecciones respiratorias graves en población pediátrica y describir la complejidad clínica de los casos hospitalizados.
-
-# Tratamientos recibidos
 
 ## Soporte respiratorio y tratamiento
 
+La información vinculada a soporte respiratorio y tratamiento se presenta junto con los indicadores de internación y gravedad, dado que forma parte del mismo eje de análisis clínico-asistencial.
 
 ## Inmunizaciones
-Estrategias de inmunización y prevención
 
 Se analizaron variables relacionadas con estrategias de prevención disponibles para virus respiratorios, incluyendo vacunación antigripal, vacunación materna y uso de anticuerpos monoclonales.
 
-# Vacunación antigripal
+::: {.panel-tabset}
+
+### Tabla de vacunación y profilaxis
+
+```{r}
+tabla_vacunacion
+```
+
+### Gráfico de vacunación y profilaxis
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_vacunacion), displaylogo = FALSE)
+```
+
+:::
 
 En pacientes menores de 6 meses se evaluó además el antecedente de vacunación materna antigripal y vacunación materna contra Virus Sincicial Respiratorio.
 
-# Vacunación materna antigripal
-# Vacunación materna VSR
-
 También se describió el antecedente de administración de anticuerpos monoclonales para prevención de VSR en lactantes menores de 6 meses.
-
-# Palivizumab / Nirsevimab
 
 La incorporación de estas variables permite fortalecer el monitoreo epidemiológico de estrategias preventivas implementadas en población pediátrica y materna.
 
 ## Mortalidad
+
 Se analizaron los casos fallecidos registrados durante el período de estudio, incluyendo distribución etaria, presencia de comorbilidades y letalidad.
 
-# Resumen de fallecidos
-# Distribución etaria de fallecidos
-# Fallecidos con comorbilidades
+::: {.panel-tabset}
+
+### Resumen de fallecidos
+
+```{r}
+tabla_mortalidad
+```
+
+### Distribución etaria de fallecidos
+
+```{r}
+gt::gt(distribucion_edad_fallecidos)
+```
+
+### Fallecidos con comorbilidades
+
+```{r}
+gt::gt(fallecidos_con_comorbilidad)
+```
+
+:::
 
 La mayoría de los casos fallecidos presentó antecedentes de comorbilidades y requirió cuidados intensivos durante la internación.
 
 El análisis de mortalidad constituye un componente central de la vigilancia epidemiológica de IRAG, permitiendo monitorear la severidad de circulación viral y la carga de enfermedad asociada a infecciones respiratorias graves en población pediátrica.
 
+## Influenza por subtipo y oseltamivir
+
+Este apartado complementa la vigilancia virológica mediante el análisis de influenza según subtipo/linaje y el registro de administración de oseltamivir.
+
+::: {.card-nota}
+La variable de oseltamivir codifica presencia confirmada de administración. Los registros sin dato no permiten diferenciar ausencia de administración de falta de registro.
+:::
+
+::: {.panel-tabset}
+
+### Subtipos de influenza
+
+```{r}
+tabla_subtipos_influenza
+```
+
+### Distribución por subtipo
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_subtipos_influenza), displaylogo = FALSE)
+```
+
+### Evolución temporal
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_influenza_temporal), displaylogo = FALSE)
+```
+
+### Oseltamivir e influenza
+
+```{r}
+tabla_oseltamivir_influenza
+```
+
+### Gráfico oseltamivir e influenza
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_oseltamivir_influenza), displaylogo = FALSE)
+```
+
+### Oseltamivir por edad
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_oseltamivir_edad), displaylogo = FALSE)
+```
+
+:::
+
 # Calidad y completitud de los datos
+
 Se realizaron procedimientos sistemáticos de control de calidad sobre las bases utilizadas en el análisis, incluyendo verificación de duplicados, evaluación de consistencia interna y análisis de datos faltantes.
 
 Los registros duplicados fueron identificados mediante la combinación de las variables ID e IDEVENTOCASO, conservando el registro con mayor completitud de información en aquellos casos en que se detectaron duplicaciones.
 
-# Resumen de duplicados identificados y depurados
-
 Asimismo, se evaluó la proporción de datos faltantes para las principales variables clínicas, laboratoriales y terapéuticas incluidas en el análisis.
 
-# Tabla de completitud de variables
+::: {.panel-tabset}
+
+### Tabla de completitud de variables
+
+```{r}
+tabla_completitud
+```
+
+### Gráfico de porcentaje de datos faltantes
+
+```{r}
+plotly::config(plotly::ggplotly(grafico_completitud), displaylogo = FALSE)
+```
+
+:::
 
 Se observaron diferencias en el nivel de completitud entre variables, particularmente en aquellas relacionadas con soporte respiratorio y tratamientos específicos, lo que debe considerarse al interpretar algunos indicadores.
-
-# Gráfico de porcentaje de datos faltantes
 
 La evaluación periódica de la calidad de los datos constituye un componente central de la vigilancia centinela, permitiendo fortalecer la consistencia, oportunidad y utilidad de la información epidemiológica generada por la UC-IRAG.
 
 # Consideraciones finales
+
 La vigilancia epidemiológica desarrollada por la Unidad Centinela de Infección Respiratoria Aguda Grave del Hospital General de Niños “Dr. Ricardo Gutiérrez” permitió caracterizar de manera sistemática la carga de enfermedad respiratoria grave en población pediátrica hospitalizada durante el período analizado.
 
 La integración de información clínica, epidemiológica y laboratorial posibilitó describir la evolución temporal de los casos, la circulación de virus respiratorios, los perfiles de gravedad clínica y las principales características de los pacientes incluidos en la vigilancia.
@@ -294,6 +950,6 @@ El monitoreo continuo de indicadores de hospitalización, utilización de cuidad
 
 Asimismo, la incorporación de variables vinculadas a estrategias de inmunización y prevención aporta información útil para el seguimiento de intervenciones destinadas a reducir la carga de enfermedad respiratoria grave en población pediátrica.
 
-La automatización del procesamiento y análisis de datos mediante herramientas reproducibles desarrolladas en R y Quarto contribuye a mejorar la oportunidad, estandarización y sostenibilidad de los productos de vigilancia epidemiológica, facilitando la generación periódica de reportes y visualizaciones para equipos de salud y autoridades sanitarias.
+La automatización del procesamiento y análisis de datos mediante herramientas reproducibles desarrolladas en R y Quarto contribuye a mejorar la oportunidad, estandarización y sostenibilidad de los productos de vigilancia epidemiológica, facilitando la generación periódica de reportes y visualizaciones para equipos de salud y autoridades sanitarias.Este reporte constituye uno de los productos automatizados previstos en el plan de análisis y puede complementarse con tableros de control para el seguimiento operativo de los indicadores.
 
 El fortalecimiento continuo de la calidad y completitud de los registros constituye un aspecto prioritario para optimizar la vigilancia centinela y consolidar la utilidad de la información generada para la toma de decisiones en salud pública.
