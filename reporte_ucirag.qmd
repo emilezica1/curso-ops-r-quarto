@@ -13,6 +13,7 @@ format:
     page-layout: full
     smooth-scroll: true
     code-fold: false
+    embed-resources: true
 execute:
   echo: false
   warning: false
