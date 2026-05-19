@@ -123,24 +123,26 @@ cat("\n=== INDICADOR 2: % Hospitalizaciones por IRAG/IRAGe ===\n")
 print(proporcion_hospitalizaciones)
 
 #Indicador 3: Proporción de IRAG/IRAGe con ingreso a UCI
-#Fórmula: (IRAG/IRAGe en UCI / total ingresos UCI todas las causas) * 100
+#Fórmula: (IRAG/IRAGe en UCI / total IRAG/IRAGe internados) * 100
+#La base es específica de UC-IRAG así que el denominador correcto es el total
+#de casos IRAG/IRAGe internados, no el total de ingresos UCI del hospital
 numerador_uci <- agrupada |>
   filter(evento %in% c(EVENTO_UCI_IRAG, EVENTO_UCI_IRAGE)) |>
   group_by(anio, semana) |>
   summarise(irag_irage_en_uci = sum(casos, na.rm = TRUE), .groups = "drop")
 
 denominador_uci <- agrupada |>
-  filter(evento == EVENTO_UCI_TOTAL) |>
+  filter(evento %in% c(EVENTO_IRAG, EVENTO_IRAGE)) |>
   group_by(anio, semana) |>
-  summarise(total_ingresos_uci = sum(casos, na.rm = TRUE), .groups = "drop")
+  summarise(total_internados_irag = sum(casos, na.rm = TRUE), .groups = "drop")
 
 proporcion_uci <- left_join(
   numerador_uci, denominador_uci, by = c("anio", "semana")
 ) |>
   mutate(
     porcentaje_irag_en_uci = if_else(
-      total_ingresos_uci > 0,
-      round(irag_irage_en_uci / total_ingresos_uci * 100, 1),
+      total_internados_irag > 0,
+      round(irag_irage_en_uci / total_internados_irag * 100, 1),
       NA_real_
     )
   ) |>
